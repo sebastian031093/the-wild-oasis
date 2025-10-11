@@ -1,5 +1,8 @@
 // import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
+import { GlobalStyles } from './styles/GlobalStyles';
+import Button from './ui/Button';
+import Input from './ui/inpust';
 
 const H1 = styled.h1`
   font-size: 30px;
@@ -7,22 +10,29 @@ const H1 = styled.h1`
   background-color: tomato;
 `;
 
-const Button = styled.button`
-  font-size: 1.4rem;
-  padding: 1.2rem 1.6rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 7px;
-  background-color: purple;
-  color: white;
-  cursor: pointer;
+// Define our button, but with the use of props.theme this time
+const ButtonTheme = styled.button`
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border-radius: 3px;
+
+  /* Color the border and text with theme.main */
+  color: ${props => props.theme.main};
+  border: 2px solid ${props => props.theme.main};
 `;
 
-const Input = styled.input`
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 0.8rem 1.2rem;
-`;
+// We are passing a default theme for Buttons that arent wrapped in the ThemeProvider
+ButtonTheme.defaultProps = {
+  theme: {
+    main: '#BF4F74',
+  },
+};
+
+// Define what props.theme will look like
+const theme = {
+  main: 'mediumseagreen',
+};
 
 const StyledApp = styled.div`
   background-color: tomato;
@@ -34,13 +44,24 @@ function App() {
   // const [count, setCount] = useState(0);
 
   return (
-    <StyledApp>
-      <H1>Hello from new skills</H1>
-      <H1>The Wild Oasis</H1>
-      <Button onClick={() => alert('You click me...')}>click me</Button>
-      <Button onClick={() => alert('You click me...')}>click me 2</Button>
-      <Input type="text" placeholder="Here you could put your name." />
-    </StyledApp>
+    <>
+      <GlobalStyles />
+      <StyledApp>
+        <H1>Hello from new skills</H1>
+        <H1>The Wild Oasis</H1>
+        <Button onClick={() => alert('You click me...')}>click me</Button>
+        <Button onClick={() => alert('You click me...')}>click me 2</Button>
+        <Input type="text" placeholder="Here you could put your name." />
+
+        <div>
+          <Button>Default Theme</Button>
+
+          <ThemeProvider theme={theme}>
+            <ButtonTheme>Inverted Theme</ButtonTheme>
+          </ThemeProvider>
+        </div>
+      </StyledApp>
+    </>
   );
 }
 
