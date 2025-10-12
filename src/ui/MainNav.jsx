@@ -53,7 +53,7 @@ const StyledNavLink = styled(NavLink)`
     color: var(--color-brand-600);
   }
 `;
-
+//BUG: la navegacion no esta funcionando.
 function MainNav() {
   return (
     <nav>
