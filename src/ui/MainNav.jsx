@@ -53,27 +53,27 @@ const StyledNavLink = styled(NavLink)`
     color: var(--color-brand-600);
   }
 `;
-
+//BUG: la navegacion no esta funcionando.
 function MainNav() {
   return (
     <nav>
       <NavList>
-        <StyledNavLink href="/dashboard">
+        <StyledNavLink to="/dashboard">
           <HiOutlineHome /> <span>Home</span>
         </StyledNavLink>
-        <StyledNavLink href="/bookings">
+        <StyledNavLink to="/bookings">
           <HiOutlineCalendar />
           <span>Bookings</span>
         </StyledNavLink>
-        <StyledNavLink href="/cabins">
+        <StyledNavLink to="/cabins">
           <HiOutlineHomeModern />
           <span>Cabins</span>
         </StyledNavLink>
-        <StyledNavLink href="/users">
+        <StyledNavLink to="/users">
           <HiOutlineUser />
           <span>Users</span>
         </StyledNavLink>
-        <StyledNavLink href="/settings">
+        <StyledNavLink to="/settings">
           <HiOutlineCog6Tooth />
           <span>Settings</span>
         </StyledNavLink>
