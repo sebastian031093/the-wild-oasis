@@ -1,9 +1,10 @@
 // import { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { GlobalStyles } from './styles/GlobalStyles';
 import Button from './ui/Button';
 import Input from './ui/inpust';
 import Heading from './ui/Heading';
+import Row from './ui/Row';
 
 const StyledApp = styled.div`
   background-color: tomato;
@@ -16,16 +17,26 @@ function App() {
     <>
       <GlobalStyles />
       <StyledApp>
-        <Heading as="h1">Hello from new skills</Heading>
-        <Heading as="h2">The Wild Oasis</Heading>
-        <Button onClick={() => alert('You click me...')}>click me</Button>
-        <Button onClick={() => alert('You click me...')}>click me 2</Button>
-        <Heading as="h3">Forms</Heading>
-        <di>
-          <Input type="text" placeholder="Here you could put your name." />
-          <Input type="text" placeholder="Here you could put your name." />
-          <Input type="text" placeholder="Here you could put your name." />
-        </di>
+        <Row>
+          <Row type="horizontal">
+            <Heading as="h1">The Wild Oasis</Heading>
+            <div>
+              <Heading as="h2">check in out</Heading>
+              <Button size="large" variation="primary" onClick={() => alert('You click me...')}>
+                click me
+              </Button>
+              <Button onClick={() => alert('You click me...')}>click me 2</Button>
+            </div>
+          </Row>
+
+          <Row type="vertical">
+            <Heading as="h3">Forms</Heading>
+            <form action="">
+              <Input type="number" placeholder="Here you could put your name." />
+              <Input type="number" placeholder="Here you could put your name." />
+            </form>
+          </Row>
+        </Row>
       </StyledApp>
     </>
   );

@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 // `
 
-const StyledHeading = styled.h1`
+const Heading = styled.h1`
   ${props =>
     props.as === 'h1' &&
     css`
@@ -28,9 +28,5 @@ const StyledHeading = styled.h1`
       font-weight: 500;
     `}
 `;
-
-function Heading({ children }) {
-  return <StyledHeading>{children}</StyledHeading>;
-}
 
 export default Heading;
