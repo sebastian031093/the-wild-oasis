@@ -1,12 +1,8 @@
-// import { useState } from 'react';
-// import styled from 'styled-components';
-import { GlobalStyles } from './styles/GlobalStyles';
-// import Button from './ui/Button';
-// import Input from './ui/inpust';
-// import Heading from './ui/Heading';
-// import Row from './ui/Row';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { GlobalStyles } from './styles/GlobalStyles';
 import Dashboard from './pages/Dashboard';
 import Bookings from './pages/Bookings';
 import Cabins from './pages/Cabins';
@@ -17,47 +13,18 @@ import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import AppLayout from './ui/AppLayout';
 
-// const StyledApp = styled.div`
-//   background-color: tomato;
-//   padding: 40px;
-//   border: 10px solid black;
-// `;
-
-// function App() {
-//   return (
-//     <>
-//       <GlobalStyles />
-//       <StyledApp>
-//         <Row>
-//           <Row type="horizontal">
-//             <Heading as="h1">The Wild Oasis</Heading>
-//             <div>
-//               <Heading as="h2">check in out</Heading>
-//               <Button size="large" variation="primary" onClick={() => alert('You click me...')}>
-//                 Check in
-//               </Button>
-//               <Button onClick={() => alert('You click me...')}>Check out</Button>
-//             </div>
-//           </Row>
-
-//           <Row type="vertical">
-//             <Heading as="h3">Forms</Heading>
-//             <form action="">
-//               <Input type="number" placeholder="Here you could put your name." />
-//               <Input type="number" placeholder="Here you could put your name." />
-//             </form>
-//           </Row>
-//         </Row>
-//       </StyledApp>
-//     </>
-//   );
-// }
-
-// export default App;
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+    },
+  },
+});
 
 export function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
@@ -74,7 +41,7 @@ export function App() {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
-    </>
+    </QueryClientProvider>
   );
 }
 
