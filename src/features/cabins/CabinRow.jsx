@@ -4,6 +4,8 @@ import { delteCabin } from '../../services/apiCabins';
 import toast from 'react-hot-toast';
 
 import { formatCurrency } from '../../utils/helpers';
+import { useState } from 'react';
+import CreateCabinForm from './CreateCabinForm';
 
 const TableRow = styled.div`
   display: grid;
@@ -47,8 +49,10 @@ const Discount = styled.div`
 function CabinRow({ cabin }) {
   const { id: cabinId, image, discount, name, regularPrice, maxCapacity } = cabin;
 
+  const [showForm, setShowForm] = useState(false);
+
   const queryClient = useQueryClient();
-  const { isPending, mutate } = useMutation({
+  const { isPending: isDeleting, mutate } = useMutation({
     mutationFn: id => delteCabin(id),
     onSuccess: () => {
       toast.success('cabin successfully deleted');
@@ -60,16 +64,22 @@ function CabinRow({ cabin }) {
   });
 
   return (
-    <TableRow>
-      <Img src={image} />
-      <Cabin>{name}</Cabin>
-      <div>Fits up to {maxCapacity} guests</div>
-      <Price>{formatCurrency(regularPrice)}</Price>
-      <Discount>{formatCurrency(discount)}</Discount>
-      <button disabled={isPending} onClick={() => mutate(cabinId)}>
-        Delete
-      </button>
-    </TableRow>
+    <>
+      <TableRow role="row">
+        <Img src={image} />
+        <Cabin>{name}</Cabin>
+        <div>Fits up to {maxCapacity} guests</div>
+        <Price>{formatCurrency(regularPrice)}</Price>
+        <Discount>{formatCurrency(discount)}</Discount>
+        <div /* style={{ display: 'flex' }} */>
+          <button onClick={() => setShowForm(show => !show)}>Edit</button>
+          <button disabled={isDeleting} onClick={() => mutate(cabinId)}>
+            Delete
+          </button>
+        </div>
+      </TableRow>
+      {showForm && <CreateCabinForm cabinToEdit={cabin} />}
+    </>
   );
 }
 
