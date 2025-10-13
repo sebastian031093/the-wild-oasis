@@ -45,7 +45,7 @@ export async function createEditCabin(newCabinObj, id) {
     console.error(storageError);
     throw new Error('Cabin image could not be upoloadin and the cabin was not created');
   }
-
+  //TODO: retornamos una promesa que react query toma en la funcion mutation.
   return data;
 }
 
