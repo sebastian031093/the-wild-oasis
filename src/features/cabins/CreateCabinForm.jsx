@@ -28,7 +28,8 @@ function CreateCabinForm() {
 
   function onSubmit(data) {
     console.log('Hi from submit form..', data);
-    mutate(data);
+    //mutate(data);
+    mutate({ ...data, image: data.image.item(0) });
   }
 
   function onError(err) {
@@ -38,6 +39,11 @@ function CreateCabinForm() {
   return (
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow label="Cabin name" errors={errors?.name?.message}>
+        {/* register your input into the hook by invoking the "register" function */}
+        {/* why the ...? Because this will return an object { onChange, onBlur, customer, ref }, and by spreading we then add all these to the element [show dev tools] */}
+        {/* include validation with required or other standard HTML validation rules: required, min, max, minLength, maxLength, pattern, validate */}
+        {/* errors will return when field validation fails  */}
+
         <Input
           type="text"
           id="name"
@@ -85,8 +91,8 @@ function CreateCabinForm() {
           disabled={isPending}
           defaultValue={0}
           {...register('discount', {
-            required: 'This filed is required',
-            validate: value => value <= getValues().regularPrice || 'Discount should be less than regular price',
+            required: "Can't be empty, make it at least 0",
+            //validate: value => getValues().regularPrice >= value || 'Discount should be less than regular price',
           })}
         />
       </FormRow>
@@ -104,7 +110,13 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow label="Cabin photo" errors={errors?.image?.message}>
-        <FileInput id="image" accept="image/*" />
+        <FileInput
+          id="image"
+          accept="image/*"
+          {...register('image', {
+            required: 'This file is required',
+          })}
+        />
       </FormRow>
 
       <FormRow>
