@@ -58,8 +58,8 @@ const Button = styled.button`
 `;
 
 Button.defaultProps = {
-  size: 'small',
-  variation: 'secondary',
+  size: 'large',
+  variation: 'primary',
 };
 
 export default Button;
