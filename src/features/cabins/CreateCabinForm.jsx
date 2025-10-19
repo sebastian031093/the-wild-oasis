@@ -7,11 +7,14 @@ import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
 import useCreateCabin from './hooks/useCreateCabin';
-import useUPdateteCabin from './hooks/useUPdateteCabin';
+import useUpdateteCabin from './hooks/useUpdateCabin';
 
 //TODO:refactor this component.
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
+  const { createCabin, isCreating } = useCreateCabin();
+  const { editCabin, isEditing } = useUpdateteCabin();
   const { id: editId, ...editValues } = cabinToEdit;
+
   const isEditSession = Boolean(editId);
 
   //TODO: AQUI VALIDAMOS SI EL FORM ES PARA EDITAR O CREAR, LO QUE HACE QUE USE LOS VALORES QUE LLEGAN DE LA TABLA CABINS O UN OBJETO VACIO.
@@ -20,19 +23,31 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   });
   const { errors } = formState;
 
-  const { createCabin, isCreating } = useCreateCabin(reset);
-  const { editCabin, isEditing } = useUPdateteCabin(reset);
-
   const isWorking = isCreating || isEditing;
 
   function onSubmit(data) {
-    console.log('Hi from submit form..', data);
+    const image = typeof data.image === 'string' ? data.image : data.image[0];
 
-    const image = typeof data.image === 'string' ? data.image : data.image.item(0);
-
-    //mutate(data);
-    if (isEditSession) editCabin({ newCabinData: { ...data, image }, id: editId });
-    else createCabin({ ...data, image: image });
+    if (isEditSession)
+      editCabin(
+        { newCabinData: { ...data, image }, id: editId },
+        {
+          onSuccess: data => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
+    else
+      createCabin(
+        { ...data, image: image },
+        {
+          onSuccess: data => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
   }
 
   function onError(err) {
@@ -40,7 +55,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form type="modal" onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow label="Cabin name" errors={errors?.name?.message}>
         {/* register your input into the hook by invoking the "register" function */}
         {/* why the ...? Because this will return an object { onChange, onBlur, customer, ref }, and by spreading we then add all these to the element [show dev tools] */}
@@ -124,7 +139,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button onClick={() => onCloseModal?.()} variation="secondary" type="reset">
           Cancel
         </Button>
         <Button disabled={isWorking}>{isEditSession ? 'Edit cabin' : 'Create new cabin'}</Button>

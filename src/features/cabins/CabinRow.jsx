@@ -53,7 +53,7 @@ function CabinRow({ cabin }) {
 
   const { createCabin, isCreating } = useCreateCabin();
 
-  function handleDuplicate(params) {
+  function handleDuplicate() {
     createCabin({
       name: `copu of ${name}`,
       image,
