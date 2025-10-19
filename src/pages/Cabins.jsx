@@ -3,6 +3,7 @@ import Row from '../ui/Row';
 import CabinTable from '../features/cabins/CabinTable';
 import AddCabin from '../features/cabins/addCabin';
 
+//TODO:create a last compound component
 function Cabins() {
   //const [showForm, setShowForm] = useState(false);
 

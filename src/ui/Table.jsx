@@ -48,7 +48,7 @@ const Footer = styled.footer`
   justify-content: center;
   padding: 1.2rem;
 
-  /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
+  /* TODO: This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
   &:not(:has(*)) {
     display: none;
   }
@@ -88,15 +88,18 @@ function Row({ children }) {
     </StyledRow>
   );
 }
-function Body({ children }) {
+function Body({ data, render }) {
   const { columns } = useContext(TableContext);
+
+  if (!data.length) return <Empty>No data available for now</Empty>;
 
   return (
     <StyledBody role="row" columns={columns}>
-      {children}
+      {data.map(render)}
     </StyledBody>
   );
 }
+
 function Foooter({ params }) {}
 
 Table.Row = Row;
