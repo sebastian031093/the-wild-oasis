@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import { useContext } from 'react';
+import { createContext } from 'react';
+import styled from 'styled-components';
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -11,7 +13,7 @@ const StyledTable = styled.div`
 
 const CommonRow = styled.div`
   display: grid;
-  grid-template-columns: ${(props) => props.columns};
+  grid-template-columns: ${props => props.columns};
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
@@ -46,7 +48,7 @@ const Footer = styled.footer`
   justify-content: center;
   padding: 1.2rem;
 
-  /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
+  /* TODO: This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
   &:not(:has(*)) {
     display: none;
   }
@@ -58,3 +60,51 @@ const Empty = styled.p`
   text-align: center;
   margin: 2.4rem;
 `;
+
+const TableContext = createContext();
+
+function Table({ columns, children }) {
+  return (
+    <TableContext.Provider value={{ columns }}>
+      <StyledTable>{children}</StyledTable>
+    </TableContext.Provider>
+  );
+}
+function Header({ children }) {
+  const { columns } = useContext(TableContext);
+
+  return (
+    <StyledHeader as="header" role="row" columns={columns}>
+      {children}
+    </StyledHeader>
+  );
+}
+function Row({ children }) {
+  const { columns } = useContext(TableContext);
+
+  return (
+    <StyledRow role="row" columns={columns}>
+      {children}
+    </StyledRow>
+  );
+}
+function Body({ data, render }) {
+  const { columns } = useContext(TableContext);
+
+  if (!data.length) return <Empty>No data available for now</Empty>;
+
+  return (
+    <StyledBody role="row" columns={columns}>
+      {data.map(render)}
+    </StyledBody>
+  );
+}
+
+function Foooter({ params }) {}
+
+Table.Row = Row;
+Table.Header = Header;
+Table.Body = Body;
+Table.Foooter = Foooter;
+
+export default Table;
